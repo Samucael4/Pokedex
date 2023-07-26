@@ -3,6 +3,7 @@ import PokemomCard from '../components/PokemomCard'
 import Navbar from '../components/Navbar'
 import { Container, Grid } from '@mui/material'
 import axios from "axios"
+import { Skeletons } from '../components/Skeletons'
 //import {Box, Container} from "@mui/system"
 
 
@@ -24,13 +25,13 @@ export const Home = () => {
     //   .catch((err) => console.error(err))
   }
 
-  const pokemonFilter = (name) =>{
+  const pokemonFilter = (name) => {
     var filteredPokemons = []
-    if(name===""){
+    if (name === "") {
       getPokemons()
     }
-    for (var i in pokemons){
-      if (pokemons[i].data.name.includes(name)){
+    for (var i in pokemons) {
+      if (pokemons[i].data.name.includes(name)) {
         filteredPokemons.push(pokemons[i])
       }
     }
@@ -43,14 +44,17 @@ export const Home = () => {
 
   return (
     <div>
-      <Navbar  pokemonFilter={pokemonFilter}/>
+      <Navbar pokemonFilter={pokemonFilter} />
       <Container maxWidth="false"  >
-        <Grid container spacing={2}>
-          {pokemons.map((pokemon, key) => (
-            <Grid item xs={2} key={key}>
-              <PokemomCard name={pokemon.data.name} image={pokemon.data.sprites.front_default} types={pokemon.data.types} />
-            </Grid>
-          ))}
+        <Grid container spacing={3}>
+          {pokemons.length === 0 ? (<Skeletons />) : (
+            pokemons.map((pokemon, key) => (
+              <Grid item xs={12} sm={6} md={4} lg={2} key={key}>
+                <PokemomCard name={pokemon.data.name} image={pokemon.data.sprites.front_default} types={pokemon.data.types} />
+              </Grid>
+            ))
+          )}
+
         </Grid>
       </Container>
     </div>
